@@ -17,6 +17,7 @@ namespace KidClock.Modules.Games
             // 显式注册名称
             containerRegistry.RegisterForNavigation<TimeDetectiveView>("TimeDetectiveView");
             containerRegistry.RegisterForNavigation<PuzzleView>("PuzzleView");
+            containerRegistry.RegisterForNavigation<PinyinPairingView>("PinyinPairingView");
         }
     }
 }

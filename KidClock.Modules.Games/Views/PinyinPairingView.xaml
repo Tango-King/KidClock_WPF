@@ -1,0 +1,85 @@
+<UserControl x:Class="KidClock.Modules.Games.Views.PinyinPairingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="clr-namespace:KidClock.Modules.Games.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewmodels:PinyinPairingViewModel}"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <Grid Background="#FFF5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Top Bar: Target and Status -->
+        <Border Grid.Row="0" Background="#FF9F43" Padding="15">
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="目标:" FontSize="24" Foreground="White" VerticalAlignment="Center"/>
+                    <Border Background="White" CornerRadius="5" Padding="10,0" Margin="10,0">
+                        <TextBlock Text="{Binding TargetLetter}" FontSize="32" FontWeight="Bold" Foreground="#FF9F43"/>
+                    </Border>
+                    <TextBlock Text="{Binding GameStatus}" FontSize="20" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                     <Button Content="切换模式" Command="{Binding ToggleGameModeCommand}" Background="#FF6B6B" Foreground="White" Margin="0,0,20,0" Padding="10,5"/>
+                     <TextBlock Text="分数: " FontSize="24" Foreground="White"/>
+                     <TextBlock Text="{Binding Score}" FontSize="24" FontWeight="Bold" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Game Area: Floating Cards -->
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding FloatingCards}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas Background="Transparent" ClipToBounds="True"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding X}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding DataContext.CardClickedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                            CommandParameter="{Binding}"
+                            Width="60" Height="60" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{Binding BgColor}" BorderBrush="#54A0FF" BorderThickness="2" CornerRadius="30">
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="2" BlurRadius="5" Opacity="0.2"/>
+                                    </Border.Effect>
+                                    <TextBlock Text="{Binding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="28" FontWeight="Bold" Foreground="#333"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!-- Bottom Bar: Controls -->
+        <Border Grid.Row="2" Background="#EEE" Padding="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="难度选择:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <Button Content="初级 (5组)" Command="{Binding StartGameCommand}" CommandParameter="1" Margin="5" Padding="10,5"/>
+                <Button Content="中级 (10组)" Command="{Binding StartGameCommand}" CommandParameter="2" Margin="5" Padding="10,5"/>
+                <Button Content="高级 (15组)" Command="{Binding StartGameCommand}" CommandParameter="3" Margin="5" Padding="10,5"/>
+                <Button Content="专家 (20组)" Command="{Binding StartGameCommand}" CommandParameter="4" Margin="5" Padding="10,5"/>
+                <Button Content="停止游戏" Command="{Binding StopGameCommand}" Background="#FF6B6B" Foreground="White" Margin="20,5,5,5" Padding="10,5"/>
+                
+                <!-- Remove GameStatus from bottom as it is moved to top -->
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

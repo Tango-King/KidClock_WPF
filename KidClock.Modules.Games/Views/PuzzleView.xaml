@@ -17,15 +17,19 @@
 
         <!-- 左侧：表盘区域 -->
         <Grid Grid.Column="0">
-            <!-- 表盘背景 -->
-            <Ellipse Width="500" Height="500" Stroke="#333" StrokeThickness="5" Fill="White" />
-            <Ellipse Width="10" Height="10" Fill="#333" />
-            
-            <!-- 简单的辅助刻度 (12, 3, 6, 9) -->
-            <Rectangle Width="6" Height="20" Fill="#333" VerticalAlignment="Top" Margin="0,50,0,0" />
-            <Rectangle Width="6" Height="20" Fill="#333" VerticalAlignment="Bottom" Margin="0,0,0,50" />
-            <Rectangle Width="20" Height="6" Fill="#333" HorizontalAlignment="Left" Margin="50,0,0,0" />
-            <Rectangle Width="20" Height="6" Fill="#333" HorizontalAlignment="Right" Margin="0,0,50,0" />
+            <!-- 容器 Grid，固定大小，居中显示，确保刻度相对位置正确 -->
+            <Grid Width="500" Height="500" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!-- 表盘背景 -->
+                <Ellipse Width="500" Height="500" Stroke="#333" StrokeThickness="5" Fill="White" />
+                <Ellipse Width="10" Height="10" Fill="#333" />
+                
+                <!-- 简单的辅助刻度 (12, 3, 6, 9) -->
+                <!-- 因为 Grid 大小固定为 500x500，Margins 将相对于这个容器计算，不会随窗口缩放而偏离 -->
+                <Rectangle Width="6" Height="20" Fill="#333" VerticalAlignment="Top" Margin="0,0,0,0" />
+                <Rectangle Width="6" Height="20" Fill="#333" VerticalAlignment="Bottom" Margin="0,0,0,0" />
+                <Rectangle Width="20" Height="6" Fill="#333" HorizontalAlignment="Left" Margin="0,0,0,0" />
+                <Rectangle Width="20" Height="6" Fill="#333" HorizontalAlignment="Right" Margin="0,0,0,0" />
+            </Grid>
         </Grid>
 
         <!-- 右侧：控制面板与零件区 -->

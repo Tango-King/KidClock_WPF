@@ -41,7 +41,7 @@ namespace KidClock.Modules.ClockFace.Views
                     Height = height,
                     Fill = color,
                     VerticalAlignment = VerticalAlignment.Top,
-                    Margin = new Thickness(0, 10, 0, 0),
+                    Margin = new Thickness(0, 15, 0, 0), // Increased margin to pull ticks inward
                     RenderTransformOrigin = new Point(0.5, 0.5)
                 };
 

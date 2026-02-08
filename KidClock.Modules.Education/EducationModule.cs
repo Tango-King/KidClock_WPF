@@ -24,6 +24,7 @@ namespace KidClock.Modules.Education
         {
             // 显式注册名称
             containerRegistry.RegisterForNavigation<TimeRelationView>("TimeRelationView");
+            containerRegistry.RegisterForNavigation<TimeCognitionView>("TimeCognitionView");
         }
     }
 }

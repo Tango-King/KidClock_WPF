@@ -1,0 +1,95 @@
+<UserControl x:Class="KidClock.Modules.Education.Views.TimeCognitionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="clr-namespace:KidClock.Modules.Education.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewmodels:TimeCognitionViewModel}"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <Grid Background="{Binding BackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 顶部：时间显示与时段名称 -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,30,0,0">
+            <TextBlock Text="{Binding PeriodName}" FontSize="48" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">
+                <TextBlock.Effect>
+                    <DropShadowEffect ShadowDepth="2" BlurRadius="5" />
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock Text="{Binding TimeDisplay}" FontSize="36" Foreground="White" HorizontalAlignment="Center" Margin="0,10,0,0">
+                <TextBlock.Effect>
+                    <DropShadowEffect ShadowDepth="2" BlurRadius="5" />
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock Text="{Binding PeriodDescription}" FontSize="20" Foreground="White" HorizontalAlignment="Center" Margin="0,10,0,0" FontStyle="Italic">
+                 <TextBlock.Effect>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="3" />
+                </TextBlock.Effect>
+            </TextBlock>
+        </StackPanel>
+
+        <!-- 中部：场景与活动 -->
+        <Grid Grid.Row="1" Margin="20">
+            <!-- 活动列表 -->
+            <ItemsControl ItemsSource="{Binding CurrentActivities}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="White" CornerRadius="15" Margin="15" Padding="15" Width="120" Height="120" Cursor="Hand">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="5" BlurRadius="10" Opacity="0.3" />
+                            </Border.Effect>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Icon}" FontSize="48" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                    </TextBlock.RenderTransform>
+                                    <TextBlock.Triggers>
+                                        <EventTrigger RoutedEvent="Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                     From="1.0" To="1.2" Duration="0:0:1" />
+                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                     From="1.0" To="1.2" Duration="0:0:1" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </TextBlock.Triggers>
+                                </TextBlock>
+                                <TextBlock Text="{Binding Name}" FontSize="18" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" Margin="0,10,0,0" />
+                            </StackPanel>
+                            <!-- 简单的缩放动画触发器可以在这里添加 -->
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+
+        <!-- 底部：时间滑块 -->
+        <Border Grid.Row="2" Background="#80FFFFFF" Padding="20" Margin="20" CornerRadius="10">
+            <StackPanel>
+                <TextBlock Text="拖动滑块切换时间" HorizontalAlignment="Center" Foreground="#333" Margin="0,0,0,10" FontWeight="Bold" />
+                <Slider Minimum="6" Maximum="19" Value="{Binding TimeSliderValue}" 
+                        IsSnapToTickEnabled="False" TickFrequency="0.5" 
+                        LargeChange="1" SmallChange="0.1" />
+                <Grid Margin="0,5,0,0">
+                    <TextBlock Text="06:00" HorizontalAlignment="Left" Foreground="#555" />
+                    <TextBlock Text="12:00" HorizontalAlignment="Center" Foreground="#555" />
+                    <TextBlock Text="19:00" HorizontalAlignment="Right" Foreground="#555" />
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

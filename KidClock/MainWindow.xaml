@@ -56,6 +56,8 @@
                 <Button Content="时间魔法" Command="{Binding NavigateCommand}" CommandParameter="TimeRelationView" Style="{StaticResource NavButtonStyle}" Background="#FFA500"/>
                 <Button Content="时间侦探" Command="{Binding NavigateCommand}" CommandParameter="TimeDetectiveView" Style="{StaticResource NavButtonStyle}" Background="#32CD32"/>
                 <Button Content="拼图挑战" Command="{Binding NavigateCommand}" CommandParameter="PuzzleView" Style="{StaticResource NavButtonStyle}" Background="#9370DB"/>
+                <Button Content="时间认知" Command="{Binding NavigateCommand}" CommandParameter="TimeCognitionView" Style="{StaticResource NavButtonStyle}" Background="#FFD700"/>
+                <Button Content="拼音配对" Command="{Binding NavigateCommand}" CommandParameter="PinyinPairingView" Style="{StaticResource NavButtonStyle}" Background="#FF6B6B"/>
                 
             </StackPanel>
         </Border>
