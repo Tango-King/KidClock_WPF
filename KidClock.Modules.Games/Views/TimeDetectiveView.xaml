@@ -1,0 +1,87 @@
+<UserControl x:Class="KidClock.Modules.Games.Views.TimeDetectiveView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KidClock.Modules.Games.Views"
+             xmlns:vm="clr-namespace:KidClock.Modules.Games.ViewModels"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid Background="#F0FFF0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 顶部：题目显示 -->
+        <Border Grid.Row="0" Margin="20" Background="White" CornerRadius="15" Padding="20" HorizontalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" Opacity="0.2" ShadowDepth="5"/>
+            </Border.Effect>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="请拨出时间：" FontSize="32" VerticalAlignment="Center" Foreground="#555"/>
+                <TextBlock Text="{Binding TargetTimeDisplay}" FontSize="48" FontWeight="Bold" Foreground="#32CD32" Margin="10,0,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- 中间：交互时钟 -->
+        <Viewbox Grid.Row="1" Margin="20">
+            <!-- 
+                 这里使用 Grid 覆盖一个透明层来接收鼠标事件。
+                 为了简化交互，我们监听整个 Grid 的 MouseMove/MouseDown。
+            -->
+            <Grid Width="500" Height="500" 
+                  MouseLeftButtonDown="Clock_MouseLeftButtonDown"
+                  MouseMove="Clock_MouseMove"
+                  MouseLeftButtonUp="Clock_MouseLeftButtonUp"
+                  Background="Transparent"> <!-- Transparent is needed to hit test -->
+                
+                <!-- 表盘背景 -->
+                <Ellipse Fill="White" Stroke="#333" StrokeThickness="5" IsHitTestVisible="False"/>
+
+                <!-- 刻度容器 -->
+                <Grid x:Name="TicksContainer" IsHitTestVisible="False" />
+                
+                <!-- 中心点 -->
+                <Ellipse Width="20" Height="20" Fill="#333" HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="10" IsHitTestVisible="False"/>
+
+                <!-- 时针 -->
+                <Rectangle Width="12" Height="140" Fill="#333" RadiusX="5" RadiusY="5"
+                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,110,0,0"
+                           RenderTransformOrigin="0.5, 1" IsHitTestVisible="False">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="{Binding HourAngle}" />
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+
+                <!-- 分针 -->
+                <Rectangle Width="8" Height="200" Fill="#0066CC" RadiusX="4" RadiusY="4"
+                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
+                           RenderTransformOrigin="0.5, 1" IsHitTestVisible="False">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="{Binding MinuteAngle}" />
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                
+                <!-- 交互提示圆圈 (可选) -->
+            </Grid>
+        </Viewbox>
+
+        <!-- 底部：控制与反馈 -->
+        <StackPanel Grid.Row="2" Margin="20" HorizontalAlignment="Center">
+            <TextBlock Text="{Binding FeedbackMessage}" FontSize="24" FontWeight="Bold" 
+                       Foreground="{Binding FeedbackColor}" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Command="{Binding CheckAnswerCommand}" Content="检查答案" 
+                        Width="150" Height="50" FontSize="20" Background="#32CD32" Foreground="White" Margin="10"/>
+                
+                <Button Command="{Binding GenerateNewLevelCommand}" Content="下一题" 
+                        Width="150" Height="50" FontSize="20" Background="#2196F3" Foreground="White" Margin="10"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

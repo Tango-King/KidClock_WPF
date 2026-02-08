@@ -1,0 +1,64 @@
+<UserControl x:Class="KidClock.Modules.Games.Views.PuzzleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="clr-namespace:KidClock.Modules.Games.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewmodels:PuzzleViewModel}"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <Grid Background="#F0F8FF">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="300" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 左侧：表盘区域 -->
+        <Grid Grid.Column="0">
+            <!-- 表盘背景 -->
+            <Ellipse Width="500" Height="500" Stroke="#333" StrokeThickness="5" Fill="White" />
+            <Ellipse Width="10" Height="10" Fill="#333" />
+            
+            <!-- 简单的辅助刻度 (12, 3, 6, 9) -->
+            <Rectangle Width="6" Height="20" Fill="#333" VerticalAlignment="Top" Margin="0,50,0,0" />
+            <Rectangle Width="6" Height="20" Fill="#333" VerticalAlignment="Bottom" Margin="0,0,0,50" />
+            <Rectangle Width="20" Height="6" Fill="#333" HorizontalAlignment="Left" Margin="50,0,0,0" />
+            <Rectangle Width="20" Height="6" Fill="#333" HorizontalAlignment="Right" Margin="0,0,50,0" />
+        </Grid>
+
+        <!-- 右侧：控制面板与零件区 -->
+        <Border Grid.Column="1" Background="#E6E6FA" BorderBrush="#9370DB" BorderThickness="2,0,0,0">
+            <StackPanel Margin="20">
+                <TextBlock Text="拼图挑战" FontSize="24" FontWeight="Bold" Foreground="#4B0082" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                
+                <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" FontSize="16" Foreground="{Binding StatusColor}" Margin="0,0,0,10" HorizontalAlignment="Center" TextAlignment="Center"/>
+                
+                <TextBlock Text="{Binding ScoreDisplay}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                <Button Content="重新开始" Click="ResetButton_Click" Height="40" Background="#9370DB" Foreground="White" FontSize="16" Cursor="Hand">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <TextBlock Text="零件箱" Margin="0,30,0,10" FontSize="16" FontWeight="SemiBold" Foreground="#666"/>
+                <Border Height="400" BorderBrush="#CCC" BorderThickness="1" Background="White" CornerRadius="10">
+                     <!-- 这里是零件的初始大概位置，但实际上我们用全屏 Canvas 覆盖 -->
+                     <TextBlock Text="将这里的数字拖到左边" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#CCC"/>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <!-- 顶层拖拽层：覆盖整个 Grid -->
+        <Canvas x:Name="DragCanvas" Grid.ColumnSpan="2" Background="{x:Null}" 
+                MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
+                MouseMove="Canvas_MouseMove"
+                MouseLeftButtonUp="Canvas_MouseLeftButtonUp">
+            <!-- 动态生成的数字拼图将放在这里 -->
+        </Canvas>
+    </Grid>
+</UserControl>

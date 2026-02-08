@@ -1,0 +1,82 @@
+<UserControl x:Class="KidClock.Modules.ClockFace.Views.ClockFaceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KidClock.Modules.ClockFace.Views"
+             xmlns:vm="clr-namespace:KidClock.Modules.ClockFace.ViewModels"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid Background="#F0F8FF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 时钟容器 -->
+        <Viewbox Grid.Row="0" Margin="20">
+            <Grid Width="500" Height="500">
+                <!-- 表盘背景 -->
+                <Ellipse Fill="White" Stroke="#333" StrokeThickness="5">
+                    <Ellipse.Effect>
+                        <DropShadowEffect Color="Gray" BlurRadius="20" ShadowDepth="10" Opacity="0.5"/>
+                    </Ellipse.Effect>
+                </Ellipse>
+
+                <!-- 刻度线容器 -->
+                <Grid x:Name="TicksContainer" />
+
+                <!-- 数字容器 -->
+                <Grid x:Name="NumbersContainer" />
+
+                <!-- 中心点 -->
+                <Ellipse Width="20" Height="20" Fill="#333" HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="10"/>
+
+                <!-- 时针 -->
+                <Rectangle Width="12" Height="140" Fill="#333" RadiusX="5" RadiusY="5"
+                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,110,0,0"
+                           RenderTransformOrigin="0.5, 1">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="{Binding HourAngle}" />
+                    </Rectangle.RenderTransform>
+                    <Rectangle.Effect>
+                        <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="2" Opacity="0.3"/>
+                    </Rectangle.Effect>
+                </Rectangle>
+
+                <!-- 分针 -->
+                <Rectangle Width="8" Height="200" Fill="#0066CC" RadiusX="4" RadiusY="4"
+                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
+                           RenderTransformOrigin="0.5, 1">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="{Binding MinuteAngle}" />
+                    </Rectangle.RenderTransform>
+                     <Rectangle.Effect>
+                        <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="3" Opacity="0.3"/>
+                    </Rectangle.Effect>
+                </Rectangle>
+
+                <!-- 秒针 -->
+                <Grid Width="4" Height="240" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
+                      RenderTransformOrigin="0.5, 1">
+                    <Grid.RenderTransform>
+                        <RotateTransform Angle="{Binding SecondAngle}" />
+                    </Grid.RenderTransform>
+                     <Grid.Effect>
+                        <DropShadowEffect Color="Black" BlurRadius="3" ShadowDepth="4" Opacity="0.3"/>
+                    </Grid.Effect>
+                    <Rectangle Fill="#CC0000" />
+                    <!-- 秒针尾部圆圈装饰 -->
+                    <Ellipse Width="10" Height="10" Fill="#CC0000" VerticalAlignment="Top" Margin="0,-20,0,0"/>
+                </Grid>
+
+            </Grid>
+        </Viewbox>
+
+        <!-- 数字时间显示 -->
+        <TextBlock Grid.Row="1" Text="{Binding DigitalTime}" FontSize="48" FontWeight="Bold" 
+                   HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#555"/>
+    </Grid>
+</UserControl>

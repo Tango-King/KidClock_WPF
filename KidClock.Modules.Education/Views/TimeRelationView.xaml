@@ -1,0 +1,94 @@
+<UserControl x:Class="KidClock.Modules.Education.Views.TimeRelationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KidClock.Modules.Education.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid Background="#FFF5E6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 左侧：时钟演示区 -->
+        <Viewbox Grid.Column="0" Margin="20">
+            <Grid Width="500" Height="500">
+                <!-- 复用表盘背景 (简化版) -->
+                <Ellipse Fill="White" Stroke="#333" StrokeThickness="5" />
+                
+                <!-- 刻度与数字容器 (代码生成) -->
+                <Grid x:Name="ClockFaceContainer" />
+
+                <!-- 轨迹层 (Visualizing Trails) -->
+                <Canvas x:Name="TrailCanvas" Visibility="{Binding IsTrailVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <!-- 这里可以通过代码后置动态添加点，或者简化为显示虚线圆环 -->
+                    <Ellipse Width="400" Height="400" Stroke="Blue" StrokeThickness="2" StrokeDashArray="2 2" 
+                             HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50"/>
+                    <Ellipse Width="280" Height="280" Stroke="Green" StrokeThickness="4" StrokeDashArray="4 2" 
+                             HorizontalAlignment="Center" VerticalAlignment="Center" Margin="110"/>
+                </Canvas>
+
+                <!-- 指针 -->
+                <!-- 时针 -->
+                <Rectangle Width="12" Height="140" Fill="#333" RadiusX="5" RadiusY="5"
+                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,110,0,0"
+                           RenderTransformOrigin="0.5, 1">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="{Binding HourAngle}" />
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+
+                <!-- 分针 -->
+                <Rectangle Width="8" Height="200" Fill="#0066CC" RadiusX="4" RadiusY="4"
+                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"
+                           RenderTransformOrigin="0.5, 1">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="{Binding MinuteAngle}" />
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+
+                <!-- 秒针 -->
+                <Rectangle Width="4" Height="240" Fill="#CC0000"
+                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"
+                           RenderTransformOrigin="0.5, 1">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="{Binding SecondAngle}" />
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                
+                <Ellipse Width="20" Height="20" Fill="#333" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+            </Grid>
+        </Viewbox>
+
+        <!-- 右侧：控制面板 -->
+        <StackPanel Grid.Column="1" Margin="20" VerticalAlignment="Center">
+            <TextBlock Text="时间魔法实验室" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Foreground="#333"/>
+            
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" FontSize="16" Foreground="#666" Margin="0,0,0,30" Height="60"/>
+
+            <Button Command="{Binding StartOneMinuteMagicCommand}" Content="演示 1 分钟" 
+                    Height="50" Margin="0,0,0,10" Background="#4CAF50" Foreground="White" FontSize="16"/>
+            
+            <Button Command="{Binding StartOneHourMagicCommand}" Content="演示 1 小时" 
+                    Height="50" Margin="0,0,0,10" Background="#2196F3" Foreground="White" FontSize="16"/>
+            
+            <Button Command="{Binding StopMagicCommand}" Content="暂停" 
+                    Height="50" Margin="0,0,0,10" Background="#FF9800" Foreground="White" FontSize="16"/>
+            
+            <Button Command="{Binding ResetTimeCommand}" Content="重置时间" 
+                    Height="50" Margin="0,0,0,10" Background="#9E9E9E" Foreground="White" FontSize="16"/>
+
+            <CheckBox IsChecked="{Binding IsTrailVisible}" Content="显示运动轨迹" FontSize="16" Margin="0,10,0,0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

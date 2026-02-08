@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\KidClock.Core\KidClock.Core.csproj" />
+    <ProjectReference Include="..\KidClock.Services\KidClock.Services.csproj" />
+    <ProjectReference Include="..\KidClock.Modules.ClockFace\KidClock.Modules.ClockFace.csproj" />
+    <ProjectReference Include="..\KidClock.Modules.Education\KidClock.Modules.Education.csproj" />
+    <ProjectReference Include="..\KidClock.Modules.Games\KidClock.Modules.Games.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+</Project>
