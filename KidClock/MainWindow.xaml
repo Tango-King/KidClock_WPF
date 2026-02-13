@@ -58,6 +58,14 @@
                 <Button Content="拼图挑战" Command="{Binding NavigateCommand}" CommandParameter="PuzzleView" Style="{StaticResource NavButtonStyle}" Background="#9370DB"/>
                 <Button Content="时间认知" Command="{Binding NavigateCommand}" CommandParameter="TimeCognitionView" Style="{StaticResource NavButtonStyle}" Background="#FFD700"/>
                 <Button Content="拼音配对" Command="{Binding NavigateCommand}" CommandParameter="PinyinPairingView" Style="{StaticResource NavButtonStyle}" Background="#FF6B6B"/>
+                <Button Content="记忆翻牌" Command="{Binding NavigateCommand}" CommandParameter="MemoryMatchView" Style="{StaticResource NavButtonStyle}" Background="#9C27B0"/>
+                <Button Content="趣味算术" Command="{Binding NavigateCommand}" CommandParameter="MathBalloonsView" Style="{StaticResource NavButtonStyle}" Background="#03A9F4"/>
+
+                <Button Content="益智合集" Command="{Binding NavigateCommand}" CommandParameter="LogicPackView" Style="{StaticResource NavButtonStyle}" Background="#34495E"/>
+                <Button Content="序列火车" Command="{Binding NavigateCommand}" CommandParameter="SequenceTrainView" Style="{StaticResource NavButtonStyle}" Background="#2E86DE"/>
+                <Button Content="分类小超市" Command="{Binding NavigateCommand}" CommandParameter="CategoryMarketView" Style="{StaticResource NavButtonStyle}" Background="#E67E22"/>
+                <Button Content="规律拼图" Command="{Binding NavigateCommand}" CommandParameter="PatternMatrixView" Style="{StaticResource NavButtonStyle}" Background="#27AE60"/>
+                <Button Content="指令迷宫" Command="{Binding NavigateCommand}" CommandParameter="CommandMazeView" Style="{StaticResource NavButtonStyle}" Background="#8E44AD"/>
                 
             </StackPanel>
         </Border>

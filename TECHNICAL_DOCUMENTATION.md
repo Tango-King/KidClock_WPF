@@ -60,12 +60,16 @@ KidClock_WPF/
 
 ### 4.2 KidClock.Core
 *   **RegionNames**: 定义区域名称常量（如 `"MainRegion"`）。
-*   **Interfaces**: 定义 `IDataService` 等接口，确保模块间解耦。
+*   **Interfaces**: 定义 `IDataService` 等接口，确保模块间解耦；同时提供游戏战绩写入/查询与周报聚合接口。
+*   **Models**: 定义 `GameSessionResult`、`WeeklyReport` 等数据模型，用于战绩与周报展示。
 
 ### 4.3 KidClock.Services
 *   **SqliteDataService**: 实现 `IDataService`。
     *   使用 `Microsoft.Data.Sqlite` 操作嵌入式数据库。
-    *   负责初始化数据库表结构和保存/读取用户进度。
+    *   负责初始化数据库表结构和保存/读取用户进度与游戏战绩。
+    *   数据表：
+        *   `Settings`: 轻量设置（Key/Value）。
+        *   `GameSessionResults`: 单局战绩记录（游戏名、模式、难度、正确率/耗时、星级、错题标签等）。
 
 ### 4.4 KidClock.Modules.ClockFace
 *   **功能**: 显示当前系统时间。
@@ -80,8 +84,8 @@ KidClock_WPF/
     *   **轨迹系统**: 可选显示指针划过的轨迹，帮助理解角度变化。
     *   **View**: 同样采用 Code-Behind 绘制高精度刻度和数字。
 
-### 4.6 KidClock.Modules.Games (时间侦探与拼图挑战)
-*   **功能**: 包含“时间侦探”互动拨钟游戏和“拼图挑战”时钟组装游戏。
+### 4.6 KidClock.Modules.Games (游戏模块)
+*   **功能**: 包含时间类互动游戏、拼图与记忆类游戏，以及面向6-8岁的益智游戏合集。
 *   **时间侦探实现**:
     *   **鼠标交互**: 在 `TimeDetectiveView.xaml.cs` 中监听 `MouseMove` 事件。
     *   **角度计算**: 计算鼠标位置相对于表盘中心的角度变化 (`Math.Atan2`)。
@@ -92,6 +96,15 @@ KidClock_WPF/
     *   **实现**: 使用 Canvas 覆盖层 (`DragCanvas`) 处理全屏拖拽逻辑。
     *   **交互**: 鼠标按下捕获数字块，移动时更新 Canvas 坐标，释放时检测是否在正确位置附近（吸附逻辑）。
     *   **布局**: 采用 3列网格布局动态排列右侧零件箱中的数字。
+
+*   **益智游戏合集（6-8岁）**:
+    *   **入口**: `LogicPackView` 展示各益智游戏入口与“家长周报（近7天）”。
+    *   **游戏列表**:
+        *   `SequenceTrainView`: 序列火车（序列推理）。
+        *   `CategoryMarketView`: 分类小超市（分类归纳）。
+        *   `PatternMatrixView`: 规律拼图（找规律）。
+        *   `CommandMazeView`: 指令迷宫（简单迷宫+规划）。
+    *   **通用会话基类**: `GameSessionViewModelBase` 统一实现练习/挑战模式、90秒倒计时、暂停/继续、自适应三档难度与星级评价。
 
 ---
 

@@ -1,0 +1,198 @@
+<UserControl x:Class="KidClock.Modules.Games.Views.PatternMatrixView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:logic="clr-namespace:KidClock.Modules.Games.ViewModels.Logic"
+             xmlns:converters="clr-namespace:KidClock.Modules.Games.Converters"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance logic:PatternMatrixViewModel}"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <UserControl.Resources>
+        <converters:ColorToBrushConverter x:Key="ColorToBrush" />
+        <converters:StarsToTextConverter x:Key="StarsToText" />
+
+        <DataTemplate x:Key="MatrixTokenTemplate">
+            <Grid Width="52" Height="52">
+                <Ellipse Fill="{Binding Color, Converter={StaticResource ColorToBrush}}">
+                    <Ellipse.Style>
+                        <Style TargetType="Ellipse">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Shape}" Value="{x:Static logic:TokenShape.Circle}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Ellipse.Style>
+                </Ellipse>
+
+                <Rectangle Fill="{Binding Color, Converter={StaticResource ColorToBrush}}">
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Shape}" Value="{x:Static logic:TokenShape.Square}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+
+                <Path Fill="{Binding Color, Converter={StaticResource ColorToBrush}}" Data="M 26,2 L 50,50 L 2,50 Z">
+                    <Path.Style>
+                        <Style TargetType="Path">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Shape}" Value="{x:Static logic:TokenShape.Triangle}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Shape}" Value="{x:Static logic:TokenShape.Star}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                </Path>
+
+                <Path Fill="{Binding Color, Converter={StaticResource ColorToBrush}}"
+                      Data="M 26,2 L 32,20 L 52,20 L 36,31 L 42,50 L 26,38 L 10,50 L 16,31 L 0,20 L 20,20 Z">
+                    <Path.Style>
+                        <Style TargetType="Path">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Shape}" Value="{x:Static logic:TokenShape.Star}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                </Path>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid Background="#F6FFF5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#27AE60" Padding="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="规律拼图" FontSize="26" FontWeight="Bold" Foreground="White" Margin="0,0,16,0"/>
+                    <TextBlock Text="{Binding BigPrompt}" FontSize="26" FontWeight="Bold" Foreground="White"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="练习" Command="{Binding StartPracticeCommand}" Margin="6" Padding="10,6"/>
+                    <Button Content="挑战90秒" Command="{Binding StartChallengeCommand}" Margin="6" Padding="10,6"/>
+                    <Button Content="暂停" Command="{Binding PauseCommand}" Margin="6" Padding="10,6"/>
+                    <Button Content="继续" Command="{Binding ResumeCommand}" Margin="6" Padding="10,6"/>
+                    <Button Content="重置" Command="{Binding ResetCommand}" Margin="6" Padding="10,6"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Background="#E9FFE8" Padding="12">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="难度:" FontSize="20" FontWeight="Bold" Margin="0,0,8,0"/>
+                <TextBlock Text="{Binding DifficultyTier}" FontSize="20" FontWeight="Bold" Margin="0,0,20,0"/>
+                <TextBlock Text="倒计时:" FontSize="20" FontWeight="Bold" Margin="0,0,8,0"/>
+                <TextBlock Text="{Binding RemainingSeconds}" FontSize="20" FontWeight="Bold" Margin="0,0,20,0"/>
+                <TextBlock Text="分数:" FontSize="20" FontWeight="Bold" Margin="0,0,8,0"/>
+                <TextBlock Text="{Binding Score}" FontSize="20" FontWeight="Bold" Margin="0,0,20,0"/>
+                <TextBlock Text="星级:" FontSize="20" FontWeight="Bold" Margin="0,0,8,0"/>
+                <TextBlock Text="{Binding StarRating, Converter={StaticResource StarsToText}}" FontSize="22" FontWeight="Bold" Foreground="#F1C40F"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="2" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="White" BorderBrush="#27AE60" BorderThickness="3" CornerRadius="16" Padding="16" HorizontalAlignment="Center" Margin="0,10">
+                <Grid x:Name="MatrixGridContainer"/>
+            </Border>
+
+            <TextBlock Grid.Row="1" Text="选择缺失的图形：" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10"/>
+
+            <ItemsControl Grid.Row="2" ItemsSource="{Binding Options}" Margin="0,10" HorizontalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Command="{Binding DataContext.ChooseOptionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                CommandParameter="{Binding}"
+                                Margin="12"
+                                Padding="16"
+                                Background="White"
+                                BorderBrush="#27AE60"
+                                BorderThickness="3">
+                            <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource MatrixTokenTemplate}"/>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Border Background="#BBF8C291" CornerRadius="18" Padding="18" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Opacity" Value="0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ShowSuccessFeedback}" Value="True">
+                                <Setter Property="Opacity" Value="1"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.12"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" BeginTime="0:0:0.28" Duration="0:0:0.18"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Text="做对啦！" FontSize="44" FontWeight="Bold" Foreground="#1E8449"/>
+            </Border>
+
+            <Border Background="#BBD6EAF8" CornerRadius="18" Padding="18" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Opacity" Value="0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ShowHintFeedback}" Value="True">
+                                <Setter Property="Opacity" Value="1"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.12"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" BeginTime="0:0:0.28" Duration="0:0:0.18"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Text="再试一次，你一定行！" FontSize="28" FontWeight="Bold" Foreground="#1F3A93"/>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
+
